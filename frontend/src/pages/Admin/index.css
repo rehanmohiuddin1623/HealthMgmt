@@ -1,0 +1,26 @@
+.health-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-options-container {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--spacing-unit) * 1);
+  gap: calc(var(--spacing-unit) * 1);
+}
+
+.home-options-container > a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 1);
+  background-color: var(--light-yellow);
+  border-radius: 0.4rem;
+  padding: calc(var(--spacing-unit) * 1);
+  text-decoration: none;
+  justify-content: center;
+  color: #000;
+}
