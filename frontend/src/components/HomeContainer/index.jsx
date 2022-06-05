@@ -3,10 +3,12 @@ import { getRole, useHealth } from "../../context/health";
 import useCheckWallet from "../../hooks/useCheckWallet";
 import Header from "./Header";
 import "./index.css";
+import Loader from "../../components/Loader";
+import SideNav from "../SideNav";
 
 const Index = ({ children }) => {
   const [currentAccount, connectWalletHandler] = useCheckWallet();
-  const { dispatch } = useHealth();
+  const { loading, dispatch } = useHealth();
 
   const getRoleContract = async () =>
     currentAccount && dispatch({ ...(await getRole(currentAccount)) });
@@ -17,8 +19,12 @@ const Index = ({ children }) => {
 
   return (
     <>
+      {loading && <Loader />}
       <Header />
-      <div className="home-container">{children}</div>
+      <div className="home-container">
+        <SideNav />
+        <div className="container"> {children}</div>
+      </div>
     </>
   );
 };

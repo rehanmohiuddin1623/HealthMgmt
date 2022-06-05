@@ -15,30 +15,28 @@ contract Monitor {
   Patient patient;
   Doctor doctor;
   
-    function addPatientData(address patId,string memory id,string memory pulse,string memory spo2,string memory temp) public returns(bool) {
-        PatientMonitor memory PatientMonitorData= PatientMonitor(id,pulse,spo2,temp);
-        if(patient.isValidPatient(patId)) {
+    function addPatientData(address patId,string memory pulse,string memory spo2,string memory temp) public returns(bool) {
+        PatientMonitor memory PatientMonitorData= PatientMonitor(patId,pulse,spo2,temp);
             allPatientData[patId].push(PatientMonitorData);
             return true;
-        }
-        return false;
+        
     }
 
-    function getPatientData(address patId) public view returns(string memory,string memory,string memory,string memory){
-          PatientMonitor memory PatientMonitorData=allPatientData[patId][0];
-           if(patient.isValidPatient(patId)){
+    function getAllPatientDataLength(address pid) public view returns(uint){
+        return allPatientData[pid].length;
+    }
+
+    function getPatientData(address patId,uint index) public view returns(address,string memory,string memory,string memory){
+          PatientMonitor memory PatientMonitorData=allPatientData[patId][index];
           return (PatientMonitorData._id,PatientMonitorData.pulse,PatientMonitorData.spo2,PatientMonitorData.temp);
-           }
-           else {
-               return ("","","","");
-           }
+          
     }
  
 }
 
 
 struct PatientMonitor {
-    string _id;
+    address _id;
     string pulse;
     string spo2;
     string temp;

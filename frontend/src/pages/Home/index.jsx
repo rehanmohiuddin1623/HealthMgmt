@@ -4,21 +4,20 @@ import { assignContract } from "../../contractEther/assign";
 import { ethers } from "ethers";
 import { getRole, useHealth } from "../../context/health";
 import useCheckWallet from "../../hooks/useCheckWallet";
+import Button from "../../components/Button";
+import "./index.css";
 
 import { Navigate } from "react-router-dom";
 
 function Index() {
   const [currentAccount, connectWalletHandler] = useCheckWallet();
-  const { type, address, role, dispatch } = useHealth();
+  const { type, _id, role, dispatch } = useHealth();
 
   const connectWalletButton = () => {
     return (
-      <button
-        onClick={connectWalletHandler}
-        className="cta-button connect-wallet-button"
-      >
-        Connect Wallet
-      </button>
+      <div className="btn-container">
+        <Button callBack={connectWalletHandler} title="Connect Wallet" />
+      </div>
     );
   };
 
@@ -30,9 +29,9 @@ function Index() {
   }, [currentAccount]);
 
   const renderRoute = {
-    0: <Navigate to={"/admin"} />,
+    0: <Navigate to={"/admin/doctor"} />,
     1: <Navigate to={"/doctor"} />,
-    2: <Navigate to={"/patient"} />,
+    2: <Navigate to={"/patient/monitor"} />,
     [-1]: <div>Error</div>,
   };
 

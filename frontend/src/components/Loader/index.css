@@ -1,0 +1,22 @@
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: calc(var(--spacing-unit) * 1.5);
+  gap: calc(var(--spacing-unit) * 0.7);
+  background-color: var(--white);
+  border-radius: 0.3rem;
+}
+
+.loader {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

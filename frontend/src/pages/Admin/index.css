@@ -24,3 +24,78 @@
   justify-content: center;
   color: #000;
 }
+
+.patients-list-container {
+  width: 100%;
+  display: grid;
+  gap: calc(var(--spacing-unit) * 1);
+  overflow-y: scroll;
+}
+
+.patients-list-container > .header {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 30vw repeat(4, 1fr);
+  padding: calc(var(--spacing-unit) * 1);
+  align-items: center;
+}
+
+.patient-list {
+  background-color: var(--light-yellow);
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 30vw repeat(4, 1fr);
+  padding: calc(var(--spacing-unit) * 1);
+  color: var(--black);
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.patient-container {
+  width: 100%;
+  height: 100%;
+}
+
+.add-patient-container {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 1);
+}
+
+.add-patient-container > .add-patient-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: calc(var(--spacing-unit) * 1);
+}
+
+.add-patient-btn {
+  width: 10%;
+}
+
+.select-container {
+  display: flex;
+  width: 100%;
+  padding: 0.8rem;
+  padding-right: 0;
+}
+.select-container > select {
+  width: 98%;
+  padding: 0.8rem;
+  outline: none;
+  border: 1px solid var(--secondary-red);
+  cursor: pointer;
+}
+.select-container > select > option {
+  cursor: pointer;
+}
+
+.data-title {
+  padding: 1rem;
+  font-size: 1.5rem;
+}
+.data-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}

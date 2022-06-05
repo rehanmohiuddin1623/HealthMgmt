@@ -7,9 +7,16 @@ function ProtectedRoute({ children }) {
   const { pathname } = useLocation();
 
   const renderRoutes = {
-    0: ["/admin", "/admin/doctor", "/admin/patient"],
-    1: ["/doctor/patient", "/doctor/monitor"],
-    2: ["/patient"],
+    0: [
+      "/admin",
+      "/admin/doctor",
+      "/admin/patient",
+      "/admin/action",
+      "/admin/monitor",
+      "/user/data",
+    ],
+    1: ["/doctor", "/doctor/patient", "/doctor/monitor", "/user/data"],
+    2: ["/user/data", "/patient/monitor"],
     [null]: ["/"],
     [-1]: ["/"],
   };

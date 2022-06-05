@@ -1,8 +1,11 @@
 .home-container {
-  padding: calc(var(--spacing-unit) * 1);
+  /* padding: calc(var(--spacing-unit) * 1); */
   display: flex;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
+  position: relative;
+  top: 13vh;
+  overflow: hidden;
 }
 
 header {
@@ -11,6 +14,11 @@ header {
   align-items: center;
   justify-content: space-between;
   padding: calc(var(--spacing-unit) * 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
 }
 
 .logo {
@@ -23,6 +31,7 @@ header > .right {
   gap: calc(var(--spacing-unit) * 1);
   flex-direction: column;
   color: var(--white);
+  margin-right: 2rem;
 }
 
 .right > a {
@@ -35,4 +44,15 @@ header > .right {
   align-items: center;
   flex-direction: column;
   justify-content: center;
+}
+
+.container {
+  padding: calc(var(--spacing-unit) * 1);
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  position: relative;
+  overflow-y: scroll;
+  height: 82vh;
+  width: 100%;
 }

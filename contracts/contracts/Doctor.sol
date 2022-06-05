@@ -4,30 +4,37 @@ pragma solidity >=0.4.22 <0.9.0;
 import "./Patient.sol";
 
 contract Doctor {
-    mapping(address=>DoctorData) allDoctors;
-    mapping (string=>PatientData) allPatients;
+    mapping(address=>DoctorData) public allDoctors;
+    address[] allDoctorAddress;
     address public owner = msg.sender;
-      uint public patientId;
 
-  function getPatientId() public returns (uint) {
-    return patientId++;
-  }
 
   Patient patient;
+
+  function getDoctorId(uint i) public view returns (address) {
+    return allDoctorAddress[i];
+  }
   
-    function addDoctor(address pId,string memory name,string memory age,string memory gender,string memory bloodGrp,string memory hosp,string memory addr,string memory device_id,string memory doctor) public returns(address){
-      DoctorData memory Ddata=DoctorData(pId,name,age,gender,bloodGrp,hosp,addr,device_id,doctor,1);
-      allDoctors[pId]=(Ddata);
-      return pId;
+    function addDoctor(address dId,string memory name,string memory age,string memory gender,string memory bloodGrp,string memory hosp,string memory addr) public returns(address){
+      DoctorData memory Ddata=DoctorData(dId,name,age,gender,bloodGrp,addr,hosp,1);
+      allDoctors[dId]=Ddata;
+      allDoctorAddress.push(dId);
+      return dId;
   }
 
-    function getDcotor(address  patId) public view returns ( address ,string memory  ,string memory ,string memory ,string memory ,string memory ,string memory ,string memory,string memory,uint) {
+    function getDoctor(address  patId) public view returns ( address ,string memory  ,string memory ,string memory ,string memory ,string memory ,string memory ,uint) {
      DoctorData memory Ddata=allDoctors[patId];
-     return ( Ddata._id,Ddata.doctorName,Ddata.age,Ddata.gender,Ddata.bloodGroup,Ddata.Address,Ddata.hospital,Ddata.device_id,Ddata.doctorAssigned,Ddata.role);
+     return ( Ddata._id,Ddata.doctorName,Ddata.age,Ddata.gender,Ddata.bloodGroup,Ddata.Address,Ddata.hospital,Ddata.role);
+ }
+
+  function totalDoctorLength()public view returns (uint ){
+     return  allDoctorAddress.length;
  }
 
  function isDoctorValid(address docId) public view returns (bool){
-     if(allDoctors[docId]._id==docId)return true;
+   if(allDoctorAddress.length==0) return false;
+   DoctorData memory data=allDoctors[docId];
+     if(data._id==docId)return true;
      else return false;
  }
  
@@ -43,8 +50,6 @@ struct DoctorData {
     string bloodGroup;
     string Address;
     string hospital;
-    string device_id;
-    string doctorAssigned;
     uint role;
 }
 

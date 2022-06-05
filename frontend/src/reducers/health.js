@@ -1,4 +1,4 @@
-import { GET_ROLE, healthState } from "../actions/Health";
+import { GET_ROLE, healthState, SET_LOADING } from "../actions/Health";
 
 export const healthReducer = (state = healthState, action) => {
   const { type, data } = action;
@@ -7,6 +7,11 @@ export const healthReducer = (state = healthState, action) => {
       return {
         ...state,
         ...data,
+      };
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: data,
       };
     default:
       return {

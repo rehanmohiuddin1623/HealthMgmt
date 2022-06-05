@@ -8,7 +8,9 @@ function Header() {
 
   return (
     <header>
-      <img src={logo} className="logo" alt="logo" />
+      <Link to={"/"}>
+        <img src={logo} className="logo" alt="logo" />
+      </Link>
       <div className="right">
         <h3>Welcome : {_id}</h3>
         <h4>Role : {type}</h4>
