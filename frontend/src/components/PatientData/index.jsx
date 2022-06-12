@@ -6,7 +6,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import "./index.css";
-import Spo2 from "../../assets/icons/spo2.svg";
+import { ReactComponent as Spo2 } from "../../assets/icons/spo2.svg";
 
 function Index({ data }) {
   const { pulse = 0, spo2 = 0, temp = 0 } = data ?? {};
