@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-const socket = io("http://192.168.0.9:5001");
+const socket = io(process.env.REACT_APP_HEALTH_API);
 
 function useSocket() {
   const [data, setData] = useState(null);

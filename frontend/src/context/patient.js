@@ -30,7 +30,7 @@ const addPatient = async (data, patientData) => {
   try {
     const resp = await PatientContract.addPatient(...data);
     const registerResp = await axios.post(
-      "https://healthy-block-chain.vercel.app/register",
+      `${process.env.REACT_APP_HEALTH_API}/register`,
       {
         name: patientData["patientName"].value,
         publicId: patientData["pId"].value,

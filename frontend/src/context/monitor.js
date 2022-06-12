@@ -55,7 +55,7 @@ const addPatientData = async ({ id, pulse, spo2, temp }) => {
 const getAllPatientsNormalData = async (id) => {
   try {
     const resp = await axios.get(
-      "https://healthy-block-chain.vercel.app/data?user=" + id
+      `${process.env.REACT_APP_HEALTH_API}/data?user=${id}`
     );
     const patientDataList = resp.data.message;
     console.log({ patientDataList });
