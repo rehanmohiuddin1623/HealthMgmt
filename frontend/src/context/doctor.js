@@ -23,12 +23,15 @@ const useDoctor = () => useContext(DoctorContext);
 const addDoctor = async (data, doctorData) => {
   try {
     const resp = await DoctorContract.addDoctor(...data);
-    const registerResp = await axios.post("http://192.168.0.9:5001/register", {
-      name: doctorData["doctorName"].value,
-      publicId: doctorData["dId"].value,
-      phone: doctorData["phone"].value,
-      type: "doctor",
-    });
+    const registerResp = await axios.post(
+      "https://healthy-block-chain.vercel.app/register",
+      {
+        name: doctorData["doctorName"].value,
+        publicId: doctorData["dId"].value,
+        phone: doctorData["phone"].value,
+        type: "doctor",
+      }
+    );
     const pId = resp;
     toast.success("Doctor Added Succesfully");
     return { type: GET_DOCTOR, data: { pId } };
