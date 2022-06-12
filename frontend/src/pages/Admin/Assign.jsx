@@ -8,6 +8,8 @@ import { useDoctor, getAllDoctors } from "../../context/doctor";
 import "../../components/Input/index.css";
 import { getPatientsAssigned, useAssign } from "../../context/assign";
 import { Link } from "react-router-dom";
+import useLoader from "../../hooks/useLoader";
+import { loaderType } from "../../util/constants";
 
 const Assign = () => {
   const { allPatientDetails, dispatch } = usePatient();
@@ -16,35 +18,49 @@ const Assign = () => {
   const { patients } = assign;
   const { allDoctors } = doctor;
   const ref = useRef();
+  const [loading, setLoader] = useLoader();
 
-  const getAllPatient = async () => {
-    dispatch({ ...(await getAllPatients()) });
+  const assignAction = {
+    getAllPatient: async () => {
+      dispatch({ ...(await getAllPatients()) });
+      return this;
+    },
+    getAllDoctor: async () => {
+      doctor.dispatch({ ...(await getAllDoctors()) });
+      return this;
+    },
   };
 
-  const getAllDoctor = async () => {
-    doctor.dispatch({ ...(await getAllDoctors()) });
+  const assignEffect = async () => {
+    setLoader(loaderType.DATA);
+    await assignAction.getAllPatient();
+    await assignAction.getAllDoctor();
+    setLoader(false);
   };
 
   useEffect(() => {
-    getAllPatient();
-    getAllDoctor();
+    assignEffect();
   }, []);
 
   const handleAssignDoctor = async (e) => {
     const { dispatch } = assign;
     const doctor = JSON.parse(e.target.value);
+    setLoader(loaderType.DATA);
     dispatch({ ...(await getPatientsAssigned(doctor._id)) });
+    setLoader(null);
   };
 
   return (
-    <HomeContainer>
+    <HomeContainer loader={loading}>
       <div className="patient-container">
         <h3>Get Patient Assigned Doctors</h3>
         <div className="select-container">
           <select onChange={handleAssignDoctor} type={"text"} className="input">
-            <option value={{}}>Select</option>
+            <option className="option" value={{}}>
+              Select
+            </option>
             {allDoctors.map((doctor) => (
-              <option value={JSON.stringify(doctor)}>
+              <option className="option" value={JSON.stringify(doctor)}>
                 {doctor.doctorName}
               </option>
             ))}

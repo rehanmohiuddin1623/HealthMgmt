@@ -24,6 +24,7 @@ contract Assign {
         return false;
     }
 
+
        function RemovePatientToDoctor(address patient_id,uint index) public returns(address) {
        delete allAssignedPatients[patient_id][index];
         return patient_id;

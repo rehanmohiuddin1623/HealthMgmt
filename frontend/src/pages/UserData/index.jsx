@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import HomeContainer from "../../components/HomeContainer";
 import "../Admin/index.css";
 import Modal from "../../components/Modal";
@@ -6,10 +6,15 @@ import useLoader from "../../hooks/useLoader";
 import PatientDetails from "../../components/PatientDetails";
 import { useDoctor, getAllDoctors } from "../../context/doctor";
 import Button from "../../components/Button";
-import { getPatientData, useMonitor } from "../../context/monitor";
+import {
+  getAllPatientsNormalData,
+  getPatientData,
+  useMonitor,
+} from "../../context/monitor";
 import { useSearchParams } from "react-router-dom";
-import { buttonStyle } from "../../util/constants";
+import { buttonStyle, loaderType } from "../../util/constants";
 import { getAllPatients, usePatient } from "../../context/patient";
+import Loader from "../../components/Loader";
 
 function Index() {
   const ref = useRef();
@@ -19,23 +24,49 @@ function Index() {
   const [loading, setLoader] = useLoader();
   const [params] = useSearchParams();
   const id = params.get("id");
+  const [toggleData, setToggleData] = useState(null);
+  const toggleRef = useRef();
 
   const getAllPatientData = async () => {
+    setLoader(loaderType.DATA);
     dispatch({ ...(await getPatientData(id)) });
+    setLoader(false);
   };
 
   const getAllPatientsData = async () => {
+    setLoader(loaderType.DATA);
     const { dispatch } = patient;
     dispatch({ ...(await getAllPatients()) });
+    setLoader(false);
+  };
+
+  const getAllNormalData = async () => {
+    setLoader(loaderType.DATA);
+    dispatch({ ...(await getAllPatientsNormalData(id)) });
+    setLoader(false);
+  };
+
+  const toggleClass = useMemo(() => {
+    return toggleData ? "toggle-right" : "toggle";
+  }, [toggleData]);
+
+  const monitorEffect = async () => {
+    if (toggleData) {
+      await getAllNormalData();
+    } else {
+      await getAllPatientsData();
+      await getAllPatientData();
+    }
   };
 
   useEffect(() => {
-    getAllPatientsData();
-    getAllPatientData();
-  }, []);
+    monitorEffect();
+  }, [toggleData]);
+
+  console.log({ toggleClass });
 
   return (
-    <HomeContainer>
+    <HomeContainer loader={loading}>
       <div className="patient-container">
         <div className="data-header">
           <h3 className="data-title">
@@ -57,6 +88,12 @@ function Index() {
           </Modal>
         </div>
         <div className="patients-list-container">
+          <div
+            onClick={() => setToggleData(!toggleData)}
+            className="data-switch"
+          >
+            <div ref={toggleRef} className={toggleClass}></div>
+          </div>
           <div className="header">
             <div>Patient ID</div>
             <div>Pulse</div>

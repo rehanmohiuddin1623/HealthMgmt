@@ -16,21 +16,21 @@ function Index({ data }) {
         <FontAwesomeIcon className="pulse" icon={faHeartbeat} size="3x" />
         <div>
           <div className="title">Pulse</div>
-          <div className="data">{pulse}</div>
+          <div className="data">{Number(pulse).toFixed(2)}</div>
         </div>
       </div>
       <div className="patient-data">
         <Spo2 />
         <div>
           <div className="title">Spo2</div>
-          <div className="data">{spo2}</div>
+          <div className="data">{Number(spo2).toFixed(2)}</div>
         </div>
       </div>
       <div className="patient-data">
         <FontAwesomeIcon className="temp" icon={faTemperature1} size="3x" />
         <div>
           <div className="title">Temp</div>
-          <div className="data">{temp}</div>
+          <div className="data">{Number(temp).toFixed(2)}</div>
         </div>
       </div>
     </div>

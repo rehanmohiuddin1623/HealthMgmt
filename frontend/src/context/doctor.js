@@ -3,6 +3,7 @@ import doctorContract from "../contractEther/doctor";
 import { toast } from "react-toastify";
 import { doctorState, GET_ALL_DOCTORS, GET_DOCTOR } from "../actions/Doctor";
 import doctorReducer from "../reducers/doctor";
+import axios from "axios";
 
 const DoctorContext = createContext(doctorState);
 const DoctorContract = doctorContract();
@@ -19,14 +20,19 @@ const DoctorProvider = ({ children }) => {
 
 const useDoctor = () => useContext(DoctorContext);
 
-const addDoctor = async (data) => {
+const addDoctor = async (data, doctorData) => {
   try {
     const resp = await DoctorContract.addDoctor(...data);
+    const registerResp = await axios.post("http://192.168.0.9:5001/register", {
+      name: doctorData["doctorName"].value,
+      publicId: doctorData["dId"].value,
+      phone: doctorData["phone"].value,
+      type: "doctor",
+    });
     const pId = resp;
-    toast.success("Patient Added Succesfully");
+    toast.success("Doctor Added Succesfully");
     return { type: GET_DOCTOR, data: { pId } };
   } catch (e) {
-    console.log(e);
     toast.error("Oops ! Something Went Wrong");
   }
 };

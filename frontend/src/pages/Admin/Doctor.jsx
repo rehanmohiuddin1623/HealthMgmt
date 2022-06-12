@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import HomeContainer from "../../components/HomeContainer";
 import "./index.css";
 import Button from "../../components/Button";
-import { buttonStyle } from "../../util/constants";
+import { buttonStyle, loaderType } from "../../util/constants";
 import Modal from "../../components/Modal";
 import Input from "../../components/Input";
 import { closeModal } from "../../util";
@@ -27,6 +27,7 @@ function Doctor() {
       placeholder: "Ex : H.No 17-xx Charminar Hyd",
       textarea: true,
     },
+    phone: { name: "Phone No", value: "+91", placeholder: "Ex : 98xxxxxxxx" },
     // hospital: { value: "MEC Hospital" },
   });
 
@@ -42,7 +43,9 @@ function Doctor() {
   };
 
   const getAllDoctor = async () => {
+    setLoader(loaderType.DATA);
     dispatch({ ...(await getAllDoctors()) });
+    setLoader(false);
   };
 
   useEffect(() => {
@@ -51,16 +54,19 @@ function Doctor() {
 
   const handleAddDoctor = async (e) => {
     const _data = [];
-    doctorKeysArr.forEach((_pKey) => _data.push(doctorData[_pKey].value));
+    doctorKeysArr.forEach(
+      (_pKey, index) => index <= 5 && _data.push(doctorData[_pKey].value)
+    );
     _data.push("MEC Hospitals");
-    setLoader(true);
-    await addDoctor(_data);
+    setLoader(loaderType.TRANSACTION);
+    console.log({ _data, doctorData });
+    await addDoctor(_data, doctorData);
     setLoader(false);
     closeModal(e);
   };
 
   return (
-    <HomeContainer>
+    <HomeContainer loader={loading}>
       <div className="patient-container">
         <Modal
           modalRef={ref}
@@ -79,6 +85,7 @@ function Doctor() {
                 type={doctorData[key].textarea ? "TEXTAREA" : "INPUT"}
                 placeholder={doctorData[key].placeholder}
                 label={key}
+                value={doctorData[key].value}
               />
             ))}
             <div className="add-patient-footer">

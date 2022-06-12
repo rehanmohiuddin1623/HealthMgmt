@@ -9,4 +9,9 @@ const role = {
   DOCTOR: "DOCTOR",
 };
 
-export { buttonStyle, role };
+const loaderType = {
+  TRANSACTION: "TRANSACTION",
+  DATA: "DATA",
+};
+
+export { buttonStyle, role, loaderType };

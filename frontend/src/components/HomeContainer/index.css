@@ -55,4 +55,6 @@ header > .right {
   overflow-y: scroll;
   height: 82vh;
   width: 100%;
+  box-sizing: border-box;
+  padding-top: 0;
 }

@@ -28,7 +28,6 @@ const getRole = async (id) => {
     const res = { type: GET_ROLE, data: {} };
     const isValidDoctor = await DoctorContract.isDoctorValid(id);
     const isValidPatient = await PatientContract.isValidPatient(id);
-    console.log({ id }, "ID");
     if (id == 0xb39bb3b7e9d15d53ba99286202ae82ebd148197c)
       res.data = { type: "ROOT", _id: id, role: 0 };
     else if (isValidDoctor) res.data = { type: "DOCTOR", _id: id, role: 1 };

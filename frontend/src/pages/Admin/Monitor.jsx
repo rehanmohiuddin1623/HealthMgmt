@@ -5,11 +5,11 @@ import { usePatient } from "../../context/patient";
 import PatientData from "../../components/PatientData";
 import { useDoctor } from "../../context/doctor";
 import useSocket from "../../hooks/useSocket";
+import useLoader from "../../hooks/useLoader";
 
 function Monitor() {
   const ref = useRef();
   const { allPatients, allPatientDetails } = usePatient();
-  const doctor = useDoctor();
   const [data, subscribe] = useSocket();
   const [subscribe_id, setSubscriber] = useState(null);
   const { patientName = "" } = allPatientDetails[subscribe_id] ?? {};
@@ -19,10 +19,8 @@ function Monitor() {
     console.log(subscribe_id);
   }, [subscribe_id]);
 
-  console.log({ allPatients });
-
   return (
-    <HomeContainer>
+    <HomeContainer loader={null}>
       <div className="patient-container">
         <div className="patients-list-container">
           <div className="header">

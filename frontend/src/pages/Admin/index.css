@@ -29,7 +29,7 @@
   width: 100%;
   display: grid;
   gap: calc(var(--spacing-unit) * 1);
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
 
 .patients-list-container > .header {
@@ -38,6 +38,8 @@
   grid-template-columns: 30vw repeat(4, 1fr);
   padding: calc(var(--spacing-unit) * 1);
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .patient-list {
@@ -79,13 +81,16 @@
   padding-right: 0;
 }
 .select-container > select {
-  width: 98%;
+  width: 100%;
   padding: 0.8rem;
   outline: none;
   border: 1px solid var(--secondary-red);
   cursor: pointer;
+  box-sizing: border-box;
 }
+
 .select-container > select > option {
+  padding: calc(var(--spacing-unit) * 1);
   cursor: pointer;
 }
 
@@ -97,5 +102,56 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
+  align-items: center;
+}
+
+.data-switch {
+  padding: calc(var(--spacing-unit) * 0.8);
+  border: 1px solid var(--secondary-red);
+  display: flex;
+  align-items: center;
+  width: 7vw;
+  height: 0.8rem;
+  border-radius: 2rem;
+  position: relative;
+  cursor: pointer;
+}
+
+.toggle {
+  padding: calc(var(--spacing-unit) * 0.8);
+  background-color: var(--primary-red);
+  width: 5px;
+  height: 1.1rem;
+  box-sizing: border-box;
+  border-radius: 2rem;
+  transform: translateX(-0.2rem);
+  transition: transform 1s;
+  display: flex;
+  align-items: center;
+  /* position: absolute;
+  left: 0.2rem; */
+}
+.toggle-right::after {
+  content: "CRITICAL";
+  position: absolute;
+  right: calc(var(--spacing-unit) * 1.8);
+  font-size: calc(var(--spacing-unit) * 0.8);
+}
+.toggle::after {
+  content: "NORMAL";
+  margin-left: 1rem;
+  font-size: calc(var(--spacing-unit) * 0.9);
+}
+
+.toggle-right {
+  padding: calc(var(--spacing-unit) * 0.8);
+  background-color: var(--primary-red);
+  width: 5px;
+  height: 1.1rem;
+  box-sizing: border-box;
+  border-radius: 2rem;
+  transform: translateX(300%);
+  transition: transform 1s;
+  display: flex;
   align-items: center;
 }

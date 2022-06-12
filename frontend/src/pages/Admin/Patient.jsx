@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import HomeContainer from "../../components/HomeContainer";
 import "./index.css";
 import Button from "../../components/Button";
-import { buttonStyle } from "../../util/constants";
+import { buttonStyle, loaderType } from "../../util/constants";
 import Modal from "../../components/Modal";
 import Input from "../../components/Input";
 import { closeModal } from "../../util";
@@ -44,6 +44,11 @@ function Patient() {
       value: "",
       placeholder: "Ex : 2ABCDXX",
     },
+    phone: {
+      name: "Phone No.",
+      value: "+91",
+      placeholder: "Ex : 987xxxxxxx",
+    },
   });
   const patientsKeysArr = Object.keys(patientData);
 
@@ -57,20 +62,24 @@ function Patient() {
   };
 
   const getAllPatient = async () => {
+    setLoader(loaderType.DATA);
     dispatch({ ...(await getAllPatients()) });
+    setLoader(false);
   };
 
   useEffect(() => {
     getAllPatient();
-  }, [loading]);
+  }, []);
 
   const handleAddPatient = async (e) => {
     const _data = [];
-    patientsKeysArr.forEach((_pKey) => _data.push(patientData[_pKey].value));
+    patientsKeysArr.forEach(
+      (_pKey, index) => index <= 6 && _data.push(patientData[_pKey].value)
+    );
     _data.push("MEC Hospitals");
     _data.push(_data[0]);
-    setLoader(true);
-    await addPatient(_data);
+    setLoader(loaderType.TRANSACTION);
+    await addPatient(_data, patientData);
     setLoader(false);
     closeModal(e);
   };
@@ -83,7 +92,7 @@ function Patient() {
   };
 
   return (
-    <HomeContainer>
+    <HomeContainer loader={loading}>
       <div className="patient-container">
         <Modal
           title="Add A Patient"

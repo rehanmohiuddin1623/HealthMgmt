@@ -1,8 +1,13 @@
 import { createContext, useContext, useReducer } from "react";
-import { GET_PATIENT_DATA, monitorState } from "../actions/Monitor";
+import {
+  GET_PATIENT_DATA,
+  monitorState,
+  SET_PATIENT_DATA,
+} from "../actions/Monitor";
 import monitorContract from "../contractEther/monitor";
 import monitorReducer from "../reducers/monitor";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const MonitorContext = createContext(monitorState);
 const MonitorContract = monitorContract();
@@ -37,4 +42,32 @@ const getPatientData = async (id) => {
   }
 };
 
-export { MonitorProvider, useMonitor, getPatientData };
+const addPatientData = async ({ id, pulse, spo2, temp }) => {
+  try {
+    await MonitorContract.addPatientData(id, pulse, spo2, temp);
+    return { type: SET_PATIENT_DATA };
+  } catch (e) {
+    toast.error("Oops ! Something Went Wrong");
+    // return { type: GET_ROLE_ERROR, data: { error: e.toString() } };
+  }
+};
+
+const getAllPatientsNormalData = async (id) => {
+  try {
+    const resp = await axios.get("http://192.168.0.9:5001/data?user=" + id);
+    const patientDataList = resp.data.message;
+    console.log({ patientDataList });
+    return { type: GET_PATIENT_DATA, data: patientDataList };
+  } catch (e) {
+    toast.error("Oops ! Something Went Wrong");
+  }
+};
+//addPatientData
+
+export {
+  MonitorProvider,
+  useMonitor,
+  getPatientData,
+  addPatientData,
+  getAllPatientsNormalData,
+};

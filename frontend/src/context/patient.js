@@ -9,6 +9,7 @@ import {
 import patientContract from "../contractEther/patient";
 import patientReducer from "../reducers/patient";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const PatientContext = createContext(patientState);
 const PatientContract = patientContract();
@@ -25,9 +26,15 @@ const PatientProvider = ({ children }) => {
 
 const usePatient = () => useContext(PatientContext);
 
-const addPatient = async (data) => {
+const addPatient = async (data, patientData) => {
   try {
     const resp = await PatientContract.addPatient(...data);
+    const registerResp = await axios.post("http://192.168.0.9:5001/register", {
+      name: patientData["patientName"].value,
+      publicId: patientData["pId"].value,
+      phone: patientData["phone"].value,
+      type: "patient",
+    });
     const pId = resp;
     toast.success("Patient Added Succesfully");
     return { type: ADD_PATIENT, data: { pId } };
