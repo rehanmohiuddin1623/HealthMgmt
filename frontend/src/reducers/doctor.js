@@ -9,23 +9,10 @@ const doctorReducer = (state = doctorState, action) => {
         ...data,
       };
     case GET_ALL_DOCTORS:
-      const allDoctors = data;
-      const _allDoctors = [];
-      allDoctors.forEach((doctor) => {
-        _allDoctors.push({
-          _id: doctor[0],
-          doctorName: doctor[1],
-          age: doctor[2],
-          gender: doctor[3],
-          bloodGroup: doctor[4],
-          Address: doctor[5],
-          hospital: doctor[6],
-        });
-      });
       return {
         ...state,
         totalDoctors: data,
-        allDoctors: [..._allDoctors.reverse()],
+        allDoctors: [...data],
       };
     default:
       return {

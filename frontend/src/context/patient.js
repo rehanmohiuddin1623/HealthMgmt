@@ -10,6 +10,7 @@ import patientContract from "../contractEther/patient";
 import patientReducer from "../reducers/patient";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { AxiosInstance } from "../AxiosInstance";
 
 const PatientContext = createContext(patientState);
 const PatientContract = patientContract();
@@ -26,23 +27,18 @@ const PatientProvider = ({ children }) => {
 
 const usePatient = () => useContext(PatientContext);
 
-const addPatient = async (data, patientData) => {
+const addPatient = async (payload) => {
   try {
-    const resp = await PatientContract.addPatient(...data);
-    const registerResp = await axios.post(
-      `${process.env.REACT_APP_HEALTH_API}/register`,
+    const { data } = await AxiosInstance.post(
+      `admin/addPatient`,
       {
-        name: patientData["patientName"].value,
-        publicId: patientData["pId"].value,
-        phone: patientData["phone"].value,
-        type: "patient",
+        ...payload
       }
     );
-    const pId = resp;
+    const resp = data?.message ?? {}
     toast.success("Patient Added Succesfully");
-    return { type: ADD_PATIENT, data: { pId } };
+    return { type: ADD_PATIENT, data: { ...resp } };
   } catch (e) {
-    console.log(e);
     toast.error("Oops ! Something Went Wrong");
     // return { type: GET_ROLE_ERROR, data: { error: e.toString() } };
   }
@@ -50,14 +46,9 @@ const addPatient = async (data, patientData) => {
 
 const getAllPatients = async () => {
   try {
-    const patientsLength = await PatientContract.totalPatientsLength();
-    const patientDataList = [];
-    for (let i = 0; i < patientsLength; i++) {
-      const patientId = await PatientContract.getPatientId(i);
-      const patientData = await PatientContract.getPatient(patientId);
-      patientDataList.push(patientData);
-    }
-    return { type: GET_ALL_PATIENTS, data: patientDataList };
+    const { data } = await AxiosInstance.get("/admin/getAllPatients");
+    const patientDataList = data?.message || []
+    return { type: GET_ALL_PATIENTS, data: [...patientDataList] };
   } catch (e) {
     console.log(e);
     // return { type: GET_ROLE_ERROR, data: { error: e.toString() } };

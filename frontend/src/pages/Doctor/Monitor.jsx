@@ -4,7 +4,6 @@ import Modal from "../../components/Modal";
 import { usePatient } from "../../context/patient";
 import PatientData from "../../components/PatientData";
 import { useDoctor } from "../../context/doctor";
-import useSocket from "../../hooks/useSocket";
 import { useAssign } from "../../context/assign";
 
 function Monitor() {
@@ -12,7 +11,7 @@ function Monitor() {
   const { allPatientDetails, allPatients } = usePatient();
   const assign = useAssign();
   const { patients } = assign;
-  const [data, subscribe] = useSocket();
+  const [data, subscribe] = [[], () => { }];
   const [subscribe_id, setSubscriber] = useState(null);
 
   useEffect(() => {
@@ -34,7 +33,7 @@ function Monitor() {
           {Array.isArray(patients) &&
             patients.map((patient) => {
               const { _id, patientName, age, gender, bloodGroup } =
-                allPatientDetails[patient.patient_id] ?? {};
+                patient ?? {};
               return (
                 <div
                   onClick={() => setSubscriber(_id)}

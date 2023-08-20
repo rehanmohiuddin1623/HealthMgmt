@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { doctorState, GET_ALL_DOCTORS, GET_DOCTOR } from "../actions/Doctor";
 import doctorReducer from "../reducers/doctor";
 import axios from "axios";
+import { AxiosInstance } from "../AxiosInstance"
 
 const DoctorContext = createContext(doctorState);
 const DoctorContract = doctorContract();
@@ -20,19 +21,15 @@ const DoctorProvider = ({ children }) => {
 
 const useDoctor = () => useContext(DoctorContext);
 
-const addDoctor = async (data, doctorData) => {
+const addDoctor = async (payload, doctorData) => {
   try {
-    const resp = await DoctorContract.addDoctor(...data);
-    const registerResp = await axios.post(
-      `${process.env.REACT_APP_HEALTH_API}/register`,
+    const { data } = await AxiosInstance.post(
+      `admin/addDoctor`,
       {
-        name: doctorData["doctorName"].value,
-        publicId: doctorData["dId"].value,
-        phone: doctorData["phone"].value,
-        type: "doctor",
+        ...payload
       }
     );
-    const pId = resp;
+    const pId = data?.message || {};
     toast.success("Doctor Added Succesfully");
     return { type: GET_DOCTOR, data: { pId } };
   } catch (e) {
@@ -42,14 +39,10 @@ const addDoctor = async (data, doctorData) => {
 
 const getAllDoctors = async () => {
   try {
-    const doctorsLength = await DoctorContract.totalDoctorLength();
-    const doctorDataList = [];
-    for (let i = 0; i < doctorsLength; i++) {
-      const doctorId = await DoctorContract.getDoctorId(i);
-      const patientData = await DoctorContract.getDoctor(doctorId);
-      doctorDataList.push(patientData);
-    }
-    return { type: GET_ALL_DOCTORS, data: doctorDataList };
+    const { data } = await AxiosInstance.get("/admin/getAllDoctors");
+    const { message = [] } = data
+    console.log("data", data)
+    return { type: GET_ALL_DOCTORS, data: [...message] };
   } catch (e) {
     console.log(e);
   }

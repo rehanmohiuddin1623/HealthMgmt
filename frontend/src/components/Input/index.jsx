@@ -10,10 +10,14 @@ function Index({
   onTyping,
   label,
   value,
+  additionalStyles = {
+    container: {}, input: {}
+  }
 }) {
+  const { container={}, input={} } = additionalStyles
   return type === "INPUT" ? (
-    <div className="input-container">
-      <div>{name} : </div>
+    <div className="input-container" style={{ ...container }} >
+      {name && <div>{name} : </div>}
       <input
         placeholder={placeholder}
         type={inputType}
@@ -22,6 +26,7 @@ function Index({
         className="input"
         name={label}
         defaultValue={value}
+        style={{ ...input }}
       />
     </div>
   ) : (

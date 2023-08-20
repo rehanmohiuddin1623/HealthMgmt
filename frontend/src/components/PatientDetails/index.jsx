@@ -6,6 +6,13 @@ import { buttonStyle } from "../../util/constants";
 import "../Input/index.css";
 
 function Index({ data, doctors, selectDoctor }) {
+
+  const getValue = (data, key) => {
+    if (typeof data[key] === "string") return data[key]
+
+    return data[key]?.name
+  }
+
   return (
     <div className="add-patient-container">
       {Object.keys(data).map(
@@ -17,24 +24,24 @@ function Index({ data, doctors, selectDoctor }) {
                 type={"text"}
                 className="input"
                 disabled={true}
-                value={data[key]}
+                value={getValue(data, key)}
               />
             </div>
           )
       )}
-      {doctors && (
+      {doctors && !data?.doctorAssigned && (
         <div className="input-container readonly">
           <div>Select Doctor : </div>
 
           <select
-            onChange={(e) => selectDoctor(JSON.parse(e.target.value))}
+            onChange={(e) => selectDoctor(e.target.value)}
             type={"text"}
             className="input"
           >
             <option value={{}}>Select</option>
             {doctors.map((doctor) => (
-              <option value={JSON.stringify(doctor)}>
-                {doctor.doctorName}
+              <option value={doctor._id}>
+                {doctor.name}
               </option>
             ))}
           </select>

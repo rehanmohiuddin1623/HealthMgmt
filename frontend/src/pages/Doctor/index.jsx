@@ -49,7 +49,7 @@ const Index = () => {
           {Array.isArray(patients) &&
             patients.map((patient) => {
               const { _id, patientName, age, gender, bloodGroup } =
-                allPatientDetails[patient.patient_id] ?? {};
+                patient ?? {};
               return (
                 <Link to={"/user/data?id=" + _id}>
                   <div className="patient-list">

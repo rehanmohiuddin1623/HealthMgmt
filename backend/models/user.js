@@ -1,13 +1,22 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new Schema({
   name: {
     type: String,
     required: true,
   },
-  publicId: {
-    type: String,
+  ref_user: {
+    type: Object,
+    role: {
+      type: Number,
+      required: true
+    },
+    info: {
+      type: mongoose.Types.ObjectId,
+      required: true,
+      default: null
+    },
     required: true,
   },
   phone: {
@@ -16,10 +25,19 @@ const UserSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ["doctor", "patient"],
+    enum: ["doctor", "patient","admin"],
     default: "patient",
     required: true,
   },
+  email: {
+    type: String,
+    required: false,
+    default: null
+  },
+  pin: {
+    type: String,
+    required: true,
+  }
 });
 
 module.exports = {

@@ -20,11 +20,6 @@ function Patient() {
   const assign = useAssign();
   const [loading, setLoader] = useLoader();
   const [patientData, setPatientData] = useState({
-    pId: {
-      name: "Patient Public Key",
-      value: "",
-      placeholder: "Ex : 0xaxxxx",
-    },
     patientName: {
       name: "Patient Name",
       value: "",
@@ -40,13 +35,13 @@ function Patient() {
       textarea: true,
     },
     device_id: {
-      name: "Device ID",
+      name: "Device ID (If Applicable)",
       value: "",
       placeholder: "Ex : 2ABCDXX",
     },
     phone: {
       name: "Phone No.",
-      value: "+91",
+      value: "",
       placeholder: "Ex : 987xxxxxxx",
     },
   });
@@ -72,14 +67,12 @@ function Patient() {
   }, []);
 
   const handleAddPatient = async (e) => {
-    const _data = [];
+    const _data = {};
     patientsKeysArr.forEach(
-      (_pKey, index) => index <= 6 && _data.push(patientData[_pKey].value)
+      (_pKey, index) => _data[_pKey] = patientData[_pKey].value
     );
-    _data.push("MEC Hospitals");
-    _data.push(_data[0]);
     setLoader(loaderType.TRANSACTION);
-    await addPatient(_data, patientData);
+    await addPatient(_data);
     setLoader(false);
     closeModal(e);
   };
@@ -87,7 +80,7 @@ function Patient() {
   const assignPatientToDoctor = async (doctor, patient) => {
     const { dispatch } = assign;
     dispatch({
-      ...(await assignDoctor(doctor._id, doctor.doctorName, patient._id)),
+      ...(await assignDoctor(doctor, patient)),
     });
   };
 
@@ -144,7 +137,7 @@ function Patient() {
               trigger={
                 <div className="patient-list">
                   <div>{patient._id}</div>
-                  <div>{patient.patientName}</div>
+                  <div>{patient.name}</div>
                   <div>{patient.age}</div>
                   <div>{patient.gender}</div>
                   <div>{patient.bloodGroup}</div>
@@ -154,7 +147,7 @@ function Patient() {
               <PatientDetails
                 data={patient}
                 doctors={allDoctors}
-                selectDoctor={(doc) => assignPatientToDoctor(doc, patient)}
+                selectDoctor={(doc) => assignPatientToDoctor(doc, patient._id)}
               />
             </Modal>
           ))}

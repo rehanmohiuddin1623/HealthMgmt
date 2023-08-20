@@ -61,7 +61,7 @@ const Assign = () => {
             </option>
             {allDoctors.map((doctor) => (
               <option className="option" value={JSON.stringify(doctor)}>
-                {doctor.doctorName}
+                {doctor.name}
               </option>
             ))}
           </select>
@@ -76,13 +76,13 @@ const Assign = () => {
           </div>
           {Array.isArray(patients) &&
             patients.map((patient) => {
-              const { _id, patientName, age, gender, bloodGroup } =
-                allPatientDetails[patient.patient_id];
+              const { _id, name, age, gender, bloodGroup } =
+              patient ?? {};
               return (
                 <Link to={"/user/data?id=" + _id}>
                   <div className="patient-list">
                     <div>{_id}</div>
-                    <div>{patientName}</div>
+                    <div>{name}</div>
                     <div>{age}</div>
                     <div>{gender}</div>
                     <div>{bloodGroup}</div>

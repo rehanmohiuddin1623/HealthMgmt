@@ -22,20 +22,19 @@ const HealthProvider = ({ children }) => {
 
 const useHealth = () => useContext(HealthContext);
 
-const getRole = async (id) => {
+const getRole = async () => {
   try {
-    // const resp = await HealthContract.getRole();
+    const userString = localStorage.getItem("user")
+    const userObj = JSON.parse(userString ?? {})
+    const { isAuth = false, role = -1, _id, name } = userObj ?? {}
     const res = { type: GET_ROLE, data: {} };
-    const isValidDoctor = await DoctorContract.isDoctorValid(id);
-    const isValidPatient = await PatientContract.isValidPatient(id);
-    if (id == 0xb39bb3b7e9d15d53ba99286202ae82ebd148197c)
-      res.data = { type: "ROOT", _id: id, role: 0 };
-    else if (isValidDoctor) res.data = { type: "DOCTOR", _id: id, role: 1 };
-    else if (isValidPatient) res.data = { type: "PATIENT", _id: id, role: 2 };
-    else res.data = { type: "INVALID", _id: id, role: -1 };
+    if (role === 0)
+      res.data = { type: "ROOT", _id, role, name };
+    else if (role === 1) res.data = { type: "DOCTOR", _id, role, name };
+    else if (role === 2) res.data = { type: "PATIENT", _id, role, name };
+    else res.data = { type: "INVALID", _id, role };
     return { ...res };
   } catch (e) {
-    console.log(e);
     return { type: GET_ROLE_ERROR, data: { error: e.toString() } };
   }
 };

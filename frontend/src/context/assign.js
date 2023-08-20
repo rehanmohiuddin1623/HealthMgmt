@@ -8,6 +8,7 @@ import {
 } from "../actions/Assign";
 import assignReducer from "../reducers/assign";
 import patientContract from "../contractEther/patient";
+import { AxiosInstance } from "../AxiosInstance";
 
 const AssignContext = createContext(assignState);
 const AssignContract = assignContract();
@@ -25,14 +26,14 @@ const AssignProvider = ({ children }) => {
 
 const useAssign = () => useContext(AssignContext);
 
-const assignDoctor = async (doc_id, doc_name, patient_id) => {
+const assignDoctor = async (doc_id, patient_id) => {
   try {
-    const resp = await AssignContract.AssignPatientToDoctor(
-      doc_id,
-      doc_name,
-      patient_id
-    );
-    await PatientContract.editPatientData(patient_id, doc_id);
+    const { data } = await AxiosInstance.put("admin/assignDoctor",null,{
+      params:{
+        doctor_id:doc_id,
+        patient_id:patient_id
+      }
+    })
     toast.success("Doctor Assigned Successfully");
     return { type: ASSIGN_DOCTOR, data: { assigned: true } };
   } catch (e) {
@@ -43,20 +44,13 @@ const assignDoctor = async (doc_id, doc_name, patient_id) => {
 
 const getPatientsAssigned = async (doctor_id) => {
   try {
-    const doctorsPatientslength =
-      await AssignContract.getPatientsAssignedLength(doctor_id);
-    const res = [];
-    for (let i = 0; i < parseInt(doctorsPatientslength); i++) {
-      const [_id, name, patient_id] = await AssignContract.getPatientByDoctor(
-        doctor_id,
-        i
-      );
-      res.push({
-        _id: doctor_id.toLowerCase(),
-        doctorName: name,
-        patient_id: patient_id.toLowerCase(),
+    const { data } =
+      await AxiosInstance.get("admin/getPatientsByDoctor",{
+        params:{
+          doctor_id:doctor_id
+        }
       });
-    }
+    const res = data?.message || {}
     toast.success("Fetched Assigned Patients Successfully");
     return { type: GET_ASSIGNED_PATIENTS, data: res };
   } catch (e) {

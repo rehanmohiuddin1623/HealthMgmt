@@ -4,13 +4,12 @@ import Modal from "../../components/Modal";
 import { usePatient } from "../../context/patient";
 import PatientData from "../../components/PatientData";
 import { useDoctor } from "../../context/doctor";
-import useSocket from "../../hooks/useSocket";
 import useLoader from "../../hooks/useLoader";
 
 function Monitor() {
   const ref = useRef();
   const { allPatients, allPatientDetails } = usePatient();
-  const [data, subscribe] = useSocket();
+  const [data, subscribe] = [[],()=>{}];
   const [subscribe_id, setSubscriber] = useState(null);
   const { patientName = "" } = allPatientDetails[subscribe_id] ?? {};
 

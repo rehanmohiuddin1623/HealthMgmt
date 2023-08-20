@@ -1,0 +1,29 @@
+.select-container {
+    /* width: 100%; */
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(var(--spacing-unit) * 0.5);
+  }
+  .select-container > div {
+    white-space: nowrap;
+    font-size: calc(var(--font-unit) * 1.2);
+    font-weight: 500;
+  }
+  .select-container > .select {
+    width: 100%;
+    padding: calc(var(--spacing-unit) * 0.5);
+    outline: none;
+    border: 1px solid var(--secondary-red);
+  }
+  
+  .select-item {
+    position: absolute;
+    background-color: white;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    border: 1px solid var(--secondary-red);
+    padding: 2rem;
+  }
+  

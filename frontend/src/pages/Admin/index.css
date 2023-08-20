@@ -35,7 +35,7 @@
 .patients-list-container > .header {
   display: grid;
   justify-content: center;
-  grid-template-columns: 30vw repeat(4, 1fr);
+  grid-template-columns: 30vw repeat(6, 1fr);
   padding: calc(var(--spacing-unit) * 1);
   align-items: center;
   width: 100%;
@@ -46,7 +46,7 @@
   background-color: var(--light-yellow);
   display: grid;
   justify-content: center;
-  grid-template-columns: 30vw repeat(4, 1fr);
+  grid-template-columns: 30vw repeat(6, 1fr);
   padding: calc(var(--spacing-unit) * 1);
   color: var(--black);
   border-radius: 0.3rem;

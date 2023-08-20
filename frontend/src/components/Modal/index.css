@@ -1,5 +1,7 @@
 .modal-container {
   padding: calc(var(--spacing-unit) * 1);
+  overflow-y: scroll;
+  height: 75vh;
 }
 .popup-content {
   border-radius: 0.3rem;

@@ -4,7 +4,7 @@ import logo from "../../assets/logo.png";
 import { useHealth } from "../../context/health";
 
 function Header() {
-  const { type, _id, role } = useHealth();
+  const { type, _id, name } = useHealth();
 
   return (
     <header>
@@ -12,7 +12,7 @@ function Header() {
         <img src={logo} className="logo" alt="logo" />
       </Link>
       <div className="right">
-        <h3>Welcome : {_id}</h3>
+        <h3>Welcome : {name}</h3>
         <h4>Role : {type}</h4>
       </div>
     </header>

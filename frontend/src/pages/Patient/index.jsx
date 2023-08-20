@@ -4,7 +4,6 @@ import Modal from "../../components/Modal";
 import { getAllPatients, usePatient } from "../../context/patient";
 import PatientData from "../../components/PatientData";
 import { useDoctor } from "../../context/doctor";
-import useSocket from "../../hooks/useSocket";
 import { useAssign } from "../../context/assign";
 import "./index.css";
 import PatientDetails from "../../components/PatientDetails";
@@ -18,7 +17,7 @@ function Monitor() {
   const { _id } = useHealth();
   const assign = useAssign();
   const { patients } = assign;
-  const [data, subscribe] = useSocket();
+  const [data, subscribe] = [[],()=>{}];
   const [subscribe_id, setSubscriber] = useState(null);
 
   const _getAllPatients = async () => {

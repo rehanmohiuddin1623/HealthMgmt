@@ -16,7 +16,6 @@ function Doctor() {
   const [loading, setLoader] = useLoader();
 
   const [doctorData, setDoctorData] = useState({
-    dId: { name: "Doctor Public Key", value: "", placeholder: "Ex : 0xaxxxx" },
     doctorName: { name: "Doctor Name", value: "", placeholder: "Ex : Atif" },
     age: { name: "Age", value: "", placeholder: "Ex : 25" },
     gender: { name: "Gender", value: "", placeholder: "Ex : M/F/B " },
@@ -27,7 +26,7 @@ function Doctor() {
       placeholder: "Ex : H.No 17-xx Charminar Hyd",
       textarea: true,
     },
-    phone: { name: "Phone No", value: "+91", placeholder: "Ex : 98xxxxxxxx" },
+    phone: { name: "Phone No", value: "", placeholder: "Ex : 98xxxxxxxx" },
     // hospital: { value: "MEC Hospital" },
   });
 
@@ -53,14 +52,13 @@ function Doctor() {
   }, []);
 
   const handleAddDoctor = async (e) => {
-    const _data = [];
+    const _data = {};
     doctorKeysArr.forEach(
-      (_pKey, index) => index <= 5 && _data.push(doctorData[_pKey].value)
+      (_pKey, index) => _data[_pKey] = doctorData[_pKey].value
     );
-    _data.push("MEC Hospitals");
     setLoader(loaderType.TRANSACTION);
     console.log({ _data, doctorData });
-    await addDoctor(_data, doctorData);
+    await addDoctor(_data);
     setLoader(false);
     closeModal(e);
   };
@@ -110,14 +108,16 @@ function Doctor() {
             <div>Age</div>
             <div>Gender</div>
             <div>Blood Group</div>
+            <div>Phone</div>
           </div>
           {allDoctors.map((doctor) => (
             <div className="patient-list">
               <div>{doctor._id}</div>
-              <div>{doctor.doctorName}</div>
+              <div>{doctor.name}</div>
               <div>{doctor.age}</div>
               <div>{doctor.gender}</div>
               <div>{doctor.bloodGroup}</div>
+              <div>{doctor.phone}</div>
             </div>
           ))}
         </div>

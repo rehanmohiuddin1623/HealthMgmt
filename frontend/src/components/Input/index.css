@@ -1,7 +1,5 @@
 .input-container {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 12rem 1fr;
+  /* width: 65%; */
   align-items: center;
   justify-content: space-between;
   gap: calc(var(--spacing-unit) * 0.5);

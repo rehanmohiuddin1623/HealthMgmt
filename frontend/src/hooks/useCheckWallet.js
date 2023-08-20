@@ -1,49 +1,45 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { AxiosInstance } from "../AxiosInstance";
 
 function useCheckWallet() {
   const [currentAccount, setCurrentAccount] = useState(null);
-  const checkWalletIsConnected = async () => {
-    const { ethereum } = window;
-    if (!ethereum) {
-      console.log("Make sure you have Metamask installed! ");
-      return;
-    } else {
-      console.log("Wallet exists! We're ready to go!");
-    }
-    const accounts = await ethereum.request({ method: "eth_accounts" });
 
-    if (accounts.length !== 0) {
-      const account = accounts[0];
-      console.log("Found an authorized account: ", account);
-
-      setCurrentAccount(account);
-    } else {
-      console.log("No authorized account found");
-    }
+  const checkUserIsLoggedIn = async () => {
+    const userString = localStorage.getItem("user")
+    const userObj = JSON.parse(userString ?? {})
+    const { isAuth = false, role = -1, _id, name } = userObj ?? {}
+    setCurrentAccount(userString ? { ...userObj } : null)
   };
 
-  const connectWalletHandler = async () => {
-    const { ethereum } = window;
-
-    if (!ethereum) {
-      alert("Please install Metamask!");
-    }
-
+  const loginHandler = async ({ phone, pin }) => {
     try {
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      console.log("Found an account! Address: ", accounts[0]);
-      setCurrentAccount(accounts[0]);
-    } catch (err) {
-      console.log(err);
+      const { data } = await AxiosInstance.post("user/login", {
+        phone, pin
+      })
+      const { isAuth = false, ref_user, type, _id, name, ...user } = data?.message || { isAuth: false, user: {} }
+      const { role } = ref_user ?? {}
+      if (isAuth) {
+        toast(`Login Success`)
+        setCurrentAccount({ ...user })
+        localStorage.setItem("user", JSON.stringify({ isAuth, role, type, _id, name }))
+      }
+      else {
+        setCurrentAccount(null)
+        throw new Error("Invalid User Credentials")
+      }
     }
-  };
+    catch (e) {
+      toast(`User Invalid`)
+      setCurrentAccount(false)
+    }
+  }
+
   useEffect(() => {
-    checkWalletIsConnected();
+    checkUserIsLoggedIn();
   }, []);
 
-  return [currentAccount, connectWalletHandler];
+  return [currentAccount, loginHandler];
 }
 
 export default useCheckWallet;
